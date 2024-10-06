@@ -41,7 +41,7 @@
 /// @param y y position of the pixel to set.
 /// @param color Color to use in 0x00RRGGBB format.
 /// @return Unused.
-int		_mlx_pixel_put(t_mlx mlx_ptr, t_win win_ptr, int x, int y, int color);
+int		mlx_pixel_put(t_mlx mlx_ptr, t_win win_ptr, int x, int y, int color);
 
 /// @brief Print text on the window.
 ///

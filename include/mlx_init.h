@@ -35,6 +35,8 @@
 ///
 /// @return The mlx connection identifier to use for all other functions.
 ///         NULL if failed.
-t_mlx	_mlx_init(void); // TODO should call this before REALLY anything else?
+t_mlx	mlx_init(void); // TODO should call this before REALLY anything else?
+
+// TODO a mlx_end() necessary?
 
 #endif

@@ -41,20 +41,21 @@
 ///               Maximum 240 to be able to adapt to the top screen of the 3DS.
 /// @param title  The title of the window. Unused in the 3DS.
 /// @return A reference to the window. NULL if failed.
-t_win	_mlx_new_window(t_mlx mlx_ptr, int size_x, int size_y, char *title);
+t_win	mlx_new_window(t_mlx mlx_ptr, int size_x, int size_y,
+			const char *title);
 
 /// @brief Clear the window in black.
 ///
 /// @param mlx_ptr mlx connection identifier returned by mlx_init().
 /// @param win_ptr Window to affect.
 /// @return Unused.
-int		_mlx_clear_window(t_mlx mlx_ptr, t_win win_ptr);
+int		mlx_clear_window(t_mlx mlx_ptr, t_win win_ptr);
 
 /// @brief Destroy a window.
 ///
 /// @param mlx_ptr mlx connection identifier returned by mlx_init().
 /// @param win_ptr Window to destroy.
 /// @return Unused.
-int		_mlx_destroy_window(t_mlx mlx_ptr, t_win win_ptr);
+int		mlx_destroy_window(t_mlx mlx_ptr, t_win win_ptr);
 
 #endif

@@ -37,22 +37,23 @@
 /// @param width Desired width of the image.
 /// @param height Desired height of the image.
 /// @return A reference to the image. NULL if failed.
-t_image	_mlx_new_image(void *mlx_ptr, int width, int height);
+t_image	mlx_new_image(void *mlx_ptr, int width, int height);
 
 /// @brief Get an address containing all the pixel values of the image. The user
 ///        can then modify the image using this pointer directly.
 ///
 /// @param img_ptr Image to use.
 /// @param bits_per_pixel Will be filled with the number of bits used for each
-///                       pixel. Will always be 24.
+///                       pixel. Can be NULL, result will always be 24.
 /// @param size_line Will be filled with the number of bytes used to store
-///                  a line of the image, aka 3 * width.
+///                  a line of the image, aka 3 * width. Can be NULL.
 /// @param endian Will be filled with the endianness of all color values.
-///               1 for big endian, 0 for little endian. Will always be 1.
+///               1 for big endian, 0 for little endian. Can be NULL, result
+///               will always be 1.
 /// @return Address to the data of the image.
 ///         Use `data[y * size_line + x * 3]` to get the first color value (red)
 ///         of a specific pixel.
-char	*_mlx_get_data_addr(t_image img_ptr, int *bits_per_pixel,
+char	*mlx_get_data_addr(t_image img_ptr, int *bits_per_pixel,
 			int *size_line, int *endian);
 
 /// @brief Draw an image on the window.
@@ -63,7 +64,7 @@ char	*_mlx_get_data_addr(t_image img_ptr, int *bits_per_pixel,
 /// @param x x position of the image to draw.
 /// @param y y position of the image to draw.
 /// @return Unused.
-int		_mlx_put_image_to_window(t_mlx mlx_ptr, t_win win_ptr, t_image img_ptr,
+int		mlx_put_image_to_window(t_mlx mlx_ptr, t_win win_ptr, t_image img_ptr,
 			int x, int y);
 
 // ???
@@ -79,6 +80,6 @@ t_image	_mlx_xpm_file_to_image(void *mlx_ptr, char *filename,
 /// @param mlx_ptr mlx connection identifier returned by mlx_init().
 /// @param img_ptr Image to destroy.
 /// @return Unused.
-int		_mlx_destroy_image(t_mlx mlx_ptr, t_image img_ptr);
+int		mlx_destroy_image(t_mlx mlx_ptr, t_image img_ptr);
 
 #endif

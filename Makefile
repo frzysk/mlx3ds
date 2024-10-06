@@ -56,7 +56,7 @@ RSF             := $(TOPDIR)/$(RESOURCES)/template.rsf
 # options for code generation
 #---------------------------------------------------------------------------------
 ARCH        := -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft
-COMMON      := -Wall -O2 -mword-relocations -fomit-frame-pointer -ffunction-sections $(ARCH) $(INCLUDE) -D__3DS__
+COMMON      := -Wall -O2 -mword-relocations -fomit-frame-pointer -ffunction-sections $(ARCH) $(INCLUDE) -D__3DS__ $(FLAGS)
 CFLAGS      := $(COMMON) -std=gnu99
 CXXFLAGS    := $(COMMON) -fno-rtti -fno-exceptions -std=gnu++11
 ASFLAGS     := $(ARCH)
@@ -343,3 +343,27 @@ endef
 #---------------------------------------------------------------------------------------
 endif
 #---------------------------------------------------------------------------------------
+
+# Added by Zy
+# To check if the headers are protected and if they include everything they need.
+check_headers :
+	@ERROR=0; \
+	for HEADER in $(wildcard *.h) $(wildcard **/*.h) $(wildcard *.hpp) $(wildcard **/*.hpp); \
+	do \
+		echo "check header $$HEADER..."; \
+		> __tmp_check_header.cpp echo "#include \"$$HEADER\""; \
+		>> __tmp_check_header.cpp echo "#include \"$$HEADER\""; \
+		>> __tmp_check_header.cpp echo "int main(void) {}"; \
+		$(CPP) $(INCLUDE) $(COMMON) $(LIBS) -o __tmp_check_header.out -c __tmp_check_header.cpp; \
+		if [ $$? -ne 0 ]; \
+		then \
+			ERROR=1; \
+			/bin/echo "  ### error :( ###"; \
+		else \
+			/bin/echo "  ### good :) ###"; \
+		fi; \
+		2> /dev/null rm -- "__tmp_check_header.out" "__tmp_check_header.c"; \
+	done; \
+	if [ $$ERROR -eq 0 ]; then true; else false; fi;
+
+.PHONY : check_headers

@@ -27,7 +27,6 @@
 # define MLX_HOOK_H
 
 # include "mlx3ds_typealiases.h"
-# include "mlx3ds_3dskey.h"
 
 /// @brief Doesn't do anything, the 3DS doesn't have a mouse.
 ///
@@ -43,14 +42,14 @@ int		_mlx_mouse_hook(t_win win_ptr, int (*funct_ptr)(), void *param);
 /// @param win_ptr Window to affect.
 /// @param funct_ptr Function to call when the event occurs. `keycode` is the
 ///                  key pressed (note that they are obviously different than
-///                  the keyboard ones, see 'mlx3ds_3ds_key.h')).
+///                  the keyboard ones, use the KEY_* constants from hid.h)).
 ///                  (TODO what was the name of the key constants use with mlx?)
 ///                  `param` is set as the address given to mlx_key_hook().
 ///                  The return value is unused.
 /// @param param Address to pass to the function every time it is called. 
 /// @return Unused.
 int		_mlx_key_hook(t_win win_ptr,
-			int (*funct_ptr)(t_3dskey keycode, void *param), void *param);
+			int (*funct_ptr)(int keycode, void *param), void *param);
 
 /// @brief Assign a function which will be called when the window should be
 ///        redrawn.
