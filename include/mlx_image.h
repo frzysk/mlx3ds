@@ -67,12 +67,14 @@ char	*mlx_get_data_addr(t_image img_ptr, int *bits_per_pixel,
 int		mlx_put_image_to_window(t_mlx mlx_ptr, t_win win_ptr, t_image img_ptr,
 			int x, int y);
 
-// ???
-t_image	_mlx_xpm_to_image(void *mlx_ptr, char **xpm_data,
+// ??? TODO docs
+// width & height CAN be null (check please :3)
+t_image	mlx_xpm_to_image(t_mlx mlx_ptr, const char **xpm_data,
 			int *width, int *height);
 
 // ???
-t_image	_mlx_xpm_file_to_image(void *mlx_ptr, char *filename,
+// width & height CAN be null (check please :3)
+t_image	_mlx_xpm_file_to_image(t_mlx mlx_ptr, char *filename,
 			int *width, int *height);
 
 /// @brief Destroy an image.

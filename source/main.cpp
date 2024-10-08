@@ -5,6 +5,7 @@ extern "C" {
 #include <iostream>
 #include <string.h>
 #include "utilsconsole.hpp"
+#include "firsk.xpm"
 
 using namespace std;
 
@@ -41,13 +42,16 @@ int main(void) {
 
 	// MENU
 	{
-		switch (uc_menu_quick("pixels", "images", "quit", NULL))
+		switch (uc_menu_quick("pixels", "images", "xpm", "quit", NULL))
 		{
 		case 0:
 			goto pixels;
 			break;
 		case 1:
 			goto images;
+			break;
+		case 2:
+			goto xpm;
 			break;
 		}
 		goto end;
@@ -167,6 +171,90 @@ images:
 	cout << "clear window..." << endl;
 	uc_pause();
 	mlx_clear_window(mlx, win);
+
+	cout << "destroy window..." << endl;
+	uc_pause();
+	mlx_destroy_window(mlx, win);
+
+	goto end;
+
+xpm:
+	cout << "create window..." << endl;
+	uc_pause();
+	win = mlx_new_window(mlx, 400, 240, "hey");
+
+	cout << "Show XPM image..." << endl;
+	uc_pause();
+	{
+		static const char *xpm[] = {
+			"4 3 3 2",
+			"r  c red",
+			"g  c green",
+			"b  c blue",
+			"r g b r ",
+			"g b r g ",
+			"b r g b ",
+		};
+		t_image img = mlx_xpm_to_image(mlx, xpm, NULL, NULL);
+		if (img)
+			mlx_put_image_to_window(mlx, win, img, 10, 10);
+		else
+			cout << "error :(" << endl;
+	}
+
+	cout << "Show bigger XPM image..." << endl;
+	uc_pause();
+	{
+		/* XPM */
+		static const char *xpm[] = {
+		/* plaid pixmap
+		* width height ncolors chars_per_pixel */
+		"22 22 4 2",
+		/* colors */
+		"r  c red",
+		"Y  c green",
+		"+  c yellow",
+		"x  c black",
+		/* pixels */
+		"x r x r x x x r x r x x x x x x + x x x x x ",
+		"r x r x r x r x r x r x x x x x x x x x x x ",
+		"x r x r x x x r x r x x x x x x + x x x x x ",
+		"r x r x r x r x r x r x x x x x x x x x x x ",
+		"x r x r x x x r x r x x x x x x + x x x x x ",
+		"Y Y Y Y Y x Y Y Y Y Y + x + x + x + x + x + ",
+		"x r x r x x x r x r x x x x x x + x x x x x ",
+		"r x r x r x r x r x r x x x x x x x x x x x ",
+		"x r x r x x x r x r x x x x x x + x x x x x ",
+		"r x r x r x r x r x r x x x x x x x x x x x ",
+		"x r x r x x x r x r x x x x x x + x x x x x ",
+		"r r r r r x r r r r r x r x r x Y x r x r x ",
+		"r r r r r x r r r r r r x r x r Y r x r x r ",
+		"r r r r r x r r r r r x r x r x Y x r x r x ",
+		"r r r r r x r r r r r r x r x r Y r x r x r ",
+		"r r r r r x r r r r r x r x r x Y x r x r x ",
+		"x x x x x x x x x x x x x x x x x x x x x x ",
+		"r r r r r x r r r r r x r x r x Y x r x r x ",
+		"r r r r r x r r r r r r x r x r Y r x r x r ",
+		"r r r r r x r r r r r x r x r x Y x r x r x ",
+		"r r r r r x r r r r r r x r x r Y r x r x r ",
+		"r r r r r x r r r r r x r x r x Y x r x r x "
+		};
+		t_image img = mlx_xpm_to_image(mlx, xpm, NULL, NULL);
+		if (img)
+			mlx_put_image_to_window(mlx, win, img, 20, 10);
+		else
+			cout << "error :(" << endl;
+	}
+
+	cout << "Show firsk..." << endl;
+	uc_pause();
+	{
+		t_image img = mlx_xpm_to_image(mlx, firsk, NULL, NULL);
+		if (img)
+			mlx_put_image_to_window(mlx, win, img, 100, 10);
+		else
+			cout << "error :(" << endl;
+	}
 
 	cout << "destroy window..." << endl;
 	uc_pause();
