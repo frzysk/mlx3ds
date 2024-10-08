@@ -1,5 +1,5 @@
 /**
- * mlx_internal.c
+ * mlx_internal.h
  *   for the project "MinilibX for 3DS"
  *   by Zy
  *   at https://github.com/frzysk/mlx3ds
@@ -9,15 +9,18 @@
  * Internal utils of the mlx3ds.
  */
 
-#include <stdbool.h>
-#include "3ds.h"
+#ifndef MLX_INTERNAL_H
+# define MLX_INTERNAL_H
+
+# include <stdbool.h>
+# include "3ds.h"
 
 /// @brief Write an error message and exit the program.
 ///
 /// @param msg Message to write. Must use less than 38 colons.
 void	mlx3ds_internal_fatalerror(const char *msg);
 
-typedef struct s_internal_win	t_internal_win;
+struct s_internal_win;
 
 /// @brief Content of the mlx connection identifier.
 typedef struct s_internal_mlx
@@ -25,7 +28,7 @@ typedef struct s_internal_mlx
 	/// @brief is true after mlx_init() was called, is false before.
 	bool			is_init_called;
 	/// @brief Window displayed on the top screen.
-	t_internal_win	*top_window;
+	struct s_internal_win	*top_window;
 }	t_internal_mlx;
 
 /// @brief Represents a window.
@@ -69,3 +72,5 @@ void	mlx3ds_internal_drawstart(
 /// @param win_ptr Reference to the window to draw on.
 void	mlx3ds_internal_drawend(
 			t_internal_mlx *mlx_ptr, t_internal_win *win_ptr);
+
+#endif

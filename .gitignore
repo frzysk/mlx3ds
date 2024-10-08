@@ -45,3 +45,5 @@ output/
 
 # VSCode
 /.vscode/
+
+/mlx3ds.lst
