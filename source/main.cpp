@@ -1,11 +1,15 @@
 extern "C" {
 #include "mlx.h"
 #include "3ds.h"
+#include "mlx3ds.h"
 }
 #include <iostream>
 #include <string.h>
 #include "utilsconsole.hpp"
+#include "utilsconsole.hpp"
 #include "firsk.xpm"
+#include <sys/dirent.h>
+#include <fcntl.h>
 
 using namespace std;
 
@@ -42,7 +46,8 @@ int main(void) {
 
 	// MENU
 	{
-		switch (uc_menu_quick("pixels", "images", "xpm", "quit", NULL))
+		switch (uc_menu_quick("pixels", "images", "xpm", "files",
+			"navigate", "assets", "quit", NULL))
 		{
 		case 0:
 			goto pixels;
@@ -52,6 +57,15 @@ int main(void) {
 			break;
 		case 2:
 			goto xpm;
+			break;
+		case 3:
+			goto files;
+			break;
+		case 4:
+			goto navigate;
+			break;
+		case 5:
+			goto assets;
 			break;
 		}
 		goto end;
@@ -260,6 +274,232 @@ xpm:
 	uc_pause();
 	mlx_destroy_window(mlx, win);
 
+	goto end;
+
+files:
+	cout << "Current working directory: " << getcwd(NULL, 0) << endl;
+	uc_pause();
+
+	cout << "List of files in /:" << endl;
+	{
+		DIR *dir = opendir("/");
+		dirent *dir_in;
+		do
+		{
+			dir_in = readdir(dir);
+			if (!dir_in)
+				break;
+			cout << "> " << dir_in->d_name << endl;
+		} while (dir_in);
+		closedir(dir);
+	}
+	uc_pause();
+
+	cout << "Read file abc.txt..." << endl;
+	{
+		int f = 0;
+		f = open("/abc.txt", O_RDONLY);
+		if (!f)
+		{
+			cout << "open() error :(" << endl;
+			goto file_read_end;
+		}
+		char buf[1000];
+		{
+			cout << "file content:" << endl << "\"";
+			int n = 1;
+			while (n)
+			{
+				n = read(f, buf, 1000);
+				if (n < 0)
+				{
+					cout << "read() error :(" << endl;
+					goto file_read_end;
+				}
+				if (n > 0)
+					write(1, buf, n);
+			}
+			cout << "\"" << endl;
+		}
+
+	file_read_end:
+		if (f)
+			close(f);
+	}
+	uc_pause();
+
+	cout << "Write \"hello :3\" in abc.txt..." << endl;
+	{
+		int f = 0;
+		f = open("/abc.txt", O_WRONLY | O_CREAT);
+		if (!f)
+		{
+			cout << "open() error :(" << endl;
+			goto file_write_end;
+		}
+		if (write(f, "hello :3", 8) < 0)
+			cout << "write() error :(" << endl;
+		else
+			cout << "write() success :)" << endl;
+
+	file_write_end:
+		if (f)
+			close(f);
+	}
+	uc_pause();
+
+	cout << "Read file abc.txt again..." << endl;
+	{
+		int f = 0;
+		f = open("/abc.txt", O_RDONLY);
+		if (!f)
+		{
+			cout << "open() error :(" << endl;
+			goto file_read2_end;
+		}
+		char buf[1000];
+		{
+			cout << "file content:" << endl << "\"";
+			int n = 1;
+			while (n)
+			{
+				n = read(f, buf, 1000);
+				if (n < 0)
+				{
+					cout << "read() error :(" << endl;
+					goto file_read2_end;
+				}
+				if (n > 0)
+					write(1, buf, n);
+			}
+			cout << "\"" << endl;
+		}
+
+	file_read2_end:
+		if (f)
+			close(f);
+	}
+	uc_pause();
+
+	goto end;
+
+navigate:
+	fsInit();
+	{
+		char *last = new char[2];
+		last[0] = '/';
+		last[1] = '\n';
+		while (true)
+		{
+			cout << "Write a file path or a directory path toshow it." << endl;
+			cout << "Put an empty text to return." << endl;
+			uc_pause();
+			char *name = NULL;
+			if (aptMainLoop())
+				name = uc_keyboard(last);
+			if (!name || !strcmp(name, ""))
+				break;
+			cout << "\e[7m" << name << "\e[0m" << endl;
+			cout << "Try to open as directory..." << endl;
+			DIR *dir = opendir(name);
+			if (dir)
+			{
+				cout << "Directory opened!" << endl;
+				uc_pause();
+				cout << "Files:" << endl;
+				dirent *dir_in;
+				do {
+					dir_in = readdir(dir);
+					cout << "> " << dir_in->d_name << endl;
+				} while (dir_in);
+				closedir(dir);
+			}
+			else {
+				cout << "Can't open as directory." << endl;
+				cout << "Try to open as file..." << endl;
+				int file = open(name, O_RDONLY);
+				if (file)
+				{
+					cout << "File opened!" << endl;
+					uc_pause();
+					cout << "Content:" << endl;
+					int n = 1;
+					char buf[1000];
+					while (n)
+					{
+						n = read(file, buf, 1000);
+						if (n < 0)
+						{
+							cout << "read() error :(" << endl;
+						}
+						if (n > 0)
+							write(1, buf, n);
+					}
+					cout << "[EOF]" << endl;
+					close(file);
+				}
+				else
+				{
+					cout << "Can't either." << endl;
+					cout << "Seems nothing works." << endl;
+					cout << "That is sad." << endl;
+					cout << "Anyway," << endl;
+				}
+			}
+			delete [] last;
+			last = name;
+			uc_pause();
+		}
+		delete [] last;
+	}
+	fsExit(); // TODO keep?
+	goto end;
+
+assets:
+	{
+		const t_embeddedasset *asset;
+
+		cout << "Read asset \"hello\"..." << endl;
+		asset = mlx3ds_assets_get("hello");
+		if (asset)
+			cout << "Content (" << asset->size << "): \""
+				<< asset->data << "\"" << endl;
+		else
+			cout << "No asset" << endl;
+		uc_pause();
+		cout << "Read asset \"bonjour\"..." << endl;
+		asset = mlx3ds_assets_get("bonjour");
+		if (asset)
+			cout << "Content (" << asset->size << "): \""
+				<< asset->data << "\"" << endl;
+		else
+			cout << "No asset" << endl;
+		uc_pause();
+		cout << "Read asset \"hola\"..." << endl;
+		asset = mlx3ds_assets_get("hola");
+		if (asset)
+			cout << "Content (" << asset->size << "): \""
+				<< asset->data << "\"" << endl;
+		else
+			cout << "No asset" << endl;
+		uc_pause();
+		cout << "Read asset \"sous/fichier\"..." << endl;
+		asset = mlx3ds_assets_get("sous/fichier");
+		if (asset)
+			cout << "Content (" << asset->size << "): \""
+				<< asset->data << "\"" << endl;
+		else
+			cout << "No asset" << endl;
+		uc_pause();
+		cout << "Read asset \"sous/sous/fichier\"..." << endl;
+		asset = mlx3ds_assets_get("sous/sous/fichier");
+		if (asset)
+			cout << "Content (" << asset->size << "): \""
+				<< asset->data << "\"" << endl;
+		else
+			cout << "No asset" << endl;
+		uc_pause();
+	}
 	goto end;
 
 end:

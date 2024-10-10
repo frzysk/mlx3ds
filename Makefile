@@ -21,6 +21,7 @@ include $(DEVKITARM)/3ds_rules
 # GFXBUILD is the directory where converted graphics files will be placed
 #   If set to $(BUILD), it will statically link in the converted
 #   files as if they were data files.
+# ASSETS is the directory of assets to embed in the rom (rule for __embeddedassets.o)
 #
 # NO_SMDH: if set to anything, no SMDH file is generated.
 # ROMFS is the directory which contains the RomFS, relative to the Makefile (Optional)
@@ -43,6 +44,7 @@ OUTPUT      := output
 RESOURCES   := resources
 ROMFS       := romfs
 GFXBUILD    := $(ROMFS)/gfx
+ASSETS		:= assets
 #---------------------------------------------------------------------------------
 # Resource Setup
 #---------------------------------------------------------------------------------
@@ -112,7 +114,7 @@ export OFILES_SOURCES := $(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
 export OFILES_BIN     := $(addsuffix .o,$(BINFILES)) \
                          $(PICAFILES:.v.pica=.shbin.o) $(SHLISTFILES:.shlist=.shbin.o) \
                          $(if $(filter $(BUILD),$(GFXBUILD)),$(addsuffix .o,$(T3XFILES)))
-export OFILES         := $(OFILES_BIN) $(OFILES_SOURCES)
+export OFILES         := $(OFILES_BIN) $(OFILES_SOURCES) __embeddedassets.o
 export HFILES         := $(PICAFILES:.v.pica=_shbin.h) $(SHLISTFILES:.shlist=_shbin.h) \
                          $(addsuffix .h,$(subst .,_,$(BINFILES))) \
                          $(GFXFILES:.t3s=.h)
@@ -345,7 +347,7 @@ endif
 #---------------------------------------------------------------------------------------
 
 # Added by Zy
-# To check if the headers are protected and if they include everything they need.
+# To check if the headers are protected and if they include everything they need.
 check_headers :
 	@ERROR=0; \
 	for HEADER in $(wildcard *.h) $(wildcard **/*.h) $(wildcard *.hpp) $(wildcard **/*.hpp); \
@@ -367,3 +369,13 @@ check_headers :
 	if [ $$ERROR -eq 0 ]; then true; else false; fi;
 
 .PHONY : check_headers
+
+
+# Added by Zy
+# To embed assets in the rom.
+
+__embeddedassets.o : $(shell find $(TOPDIR)/$(ASSETS)/ -type f)
+	$(TOPDIR)/embedassets.sh $(TOPDIR)/$(ASSETS)/ $^
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ __embeddedassets.c
+
+.PHONY : __embeddedassets.o

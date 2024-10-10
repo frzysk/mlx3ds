@@ -50,3 +50,8 @@ int uc_menu_quick(const char *str, ...);
 /// @brief Blocks the program until the user presses A.
 /// @details Will also return if aptMainLoop() becomes false.
 void uc_pause(void);
+
+/// @brief Show the 3DS keyboard to ask the user for a text.
+/// @param def The default text to show the user.
+/// @return A freeable address to the text prompted by the user. NULL if error.
+char	*uc_keyboard(const char *def);

@@ -8,6 +8,7 @@
 #include <3ds.h>
 #include <iostream>
 #include <stdarg.h>
+#include <cstring>
 
 int uc_menu(vector<s_uc_menu_element> &elements) {
     static void *lastElements = NULL;
@@ -90,4 +91,18 @@ void uc_pause(void) {
             break;
         gfxFlushBuffers();
     }
+}
+
+char	*uc_keyboard(const char *def)
+{
+	char *buf;
+	SwkbdState swkbd;
+
+	buf = new char[1000];
+	if (!buf)
+		return (NULL);
+	swkbdInit(&swkbd, SWKBD_TYPE_NORMAL, 1, -1);
+	swkbdSetInitialText(&swkbd, def);
+	swkbdInputText(&swkbd, buf, 1000);
+	return (buf);
 }
