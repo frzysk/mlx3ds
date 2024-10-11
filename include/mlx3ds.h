@@ -5,7 +5,10 @@
  *   at https://github.com/frzysk/mlx3ds
  */
 
-// TODO docs
+/**
+ * This file includes everything that doesn't exist in the original MinilibX
+ * but can be useful for the 3DS implementation.
+ */
 
 #ifndef MLX3DS_H
 # define MLX3DS_H
