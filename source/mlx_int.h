@@ -8,11 +8,16 @@
 ** Last update Wed May 25 16:44:16 2011 Olivier Crouzet
 */
 
-
-
 /*
 ** Internal settings for MiniLibX
 */
+
+/**
+ * Modified by Zy to work with the MinilibX For 3DS project
+ * (at https://github.com/frzysk/mlx3ds).
+ */
+
+// TODO: from mlx xpm: clean
 
 #ifndef MLX_INT_H
 

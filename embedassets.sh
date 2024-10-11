@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # USED BY MAKEFILE, DO NOT MOVE OR RENAME
+# TODO embedassets.sh: docs
 
 ASSETS_FULL_DIR=$1
 shift

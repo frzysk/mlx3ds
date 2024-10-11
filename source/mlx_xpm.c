@@ -8,6 +8,13 @@
  ** Last update Sat Oct  1 14:56:13 2005 Olivier Crouzet
  */
 
+/**
+ * Modified by Zy to work with the MinilibX For 3DS project
+ * (at https://github.com/frzysk/mlx3ds).
+ */
+
+// TODO: from mlx xpm: clean
+
 #include	"mlx_int.h"
 #include	"mlx.h"
 #include	"mlx_internal.h"

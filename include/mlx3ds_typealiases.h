@@ -6,9 +6,10 @@
  */
 
 /**
- * Define different type aliases for the different void* values used with
- * the mlx_ functions.
+ * This file contains different typedefs for void*, to differenciate between
+ * the different void* used by the MLX functions.
  */
+
 #ifndef MLX3DS_TYPEALIASES_H
 # define MLX3DS_TYPEALIASES_H
 

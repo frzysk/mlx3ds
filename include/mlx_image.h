@@ -17,13 +17,14 @@
  * doesn't do anything. The returned values marked as "unused" are undefined.
  * Both are kept as is to stay as compatible as possible with project using the
  * original MinilibX implementation.
- * 
- * When using a x,y couple to define a position, the origin (0,0) is always at
- * the top-left corner of the image.
  */
 
 /**
- * Functions to import, create, modify and display images.
+ * This file contains functions to import, create, modify and display images.
+ * 
+ * When using a x,y couple to define a position, the origin (0,0) is always at
+ * the top-left corner of the image (despite how the 3ds screen works, for those
+ * who know).
  */
 
 #ifndef MLX_IMAGE_H
@@ -67,17 +68,17 @@ char	*mlx_get_data_addr(t_image img_ptr, int *bits_per_pixel,
 int		mlx_put_image_to_window(t_mlx mlx_ptr, t_win win_ptr, t_image img_ptr,
 			int x, int y);
 
-// ??? TODO docs
+// ??? TODO docs xpm_to_image
 // width & height CAN be null (check please :3)
 t_image	mlx_xpm_to_image(t_mlx mlx_ptr, const char **xpm_data,
 			int *width, int *height);
 
-// ???
+// ??? TODO docs xpm_file_to_image
 // width & height CAN be null (check please :3)
 t_image	_mlx_xpm_file_to_image(t_mlx mlx_ptr, char *filename,
 			int *width, int *height);
 
-/// @brief Destroy an image.
+/// @brief Destroy an image to avoid leaks.
 ///
 /// @param mlx_ptr mlx connection identifier returned by mlx_init().
 /// @param img_ptr Image to destroy.

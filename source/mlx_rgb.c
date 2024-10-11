@@ -3,6 +3,13 @@
 ** the XFree86 distribution.
 */
 
+/**
+ * Modified by Zy to work with the MinilibX For 3DS project
+ * (at https://github.com/frzysk/mlx3ds).
+ */
+
+// TODO: from mlx xpm: clean
+
 #include	"mlx_int.h"
 
 struct s_col_name mlx_col_name[] =

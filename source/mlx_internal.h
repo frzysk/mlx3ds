@@ -6,7 +6,7 @@
  */
 
 /**
- * Internal utils of the mlx3ds.
+ * This file contains internal utils.
  */
 
 #ifndef MLX_INTERNAL_H

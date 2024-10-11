@@ -6,7 +6,8 @@
  */
 
 /**
- * Functions to use the assets embedded with the program with embedassets.sh
+ * This file contains functions to use the assets embedded with the program
+ * with embedassets.sh.
  */
 
 #ifndef MLX3DS_ASSETS_H

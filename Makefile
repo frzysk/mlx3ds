@@ -1,3 +1,7 @@
+# From (where?) (<-- TODO answer)
+# Modified by Zy to work with the MinilibX For 3DS project
+# (at https://github.com/frzysk/mlx3ds).
+
 #---------------------------------------------------------------------------------
 .SUFFIXES:
 #---------------------------------------------------------------------------------

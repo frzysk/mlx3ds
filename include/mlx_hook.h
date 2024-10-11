@@ -20,7 +20,7 @@
  */
 
 /**
- * Functions to manage window events.
+ * This file contains the functions used to manage window events.
  */
 
 #ifndef MLX_HOOK_H
@@ -43,7 +43,6 @@ int		_mlx_mouse_hook(t_win win_ptr, int (*funct_ptr)(), void *param);
 /// @param funct_ptr Function to call when the event occurs. `keycode` is the
 ///                  key pressed (note that they are obviously different than
 ///                  the keyboard ones, use the KEY_* constants from hid.h)).
-///                  (TODO what was the name of the key constants use with mlx?)
 ///                  `param` is set as the address given to mlx_key_hook().
 ///                  The return value is unused.
 /// @param param Address to pass to the function every time it is called. 

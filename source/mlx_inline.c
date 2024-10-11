@@ -5,6 +5,14 @@
  *   at https://github.com/frzysk/mlx3ds
  */
 
+/**
+ * This file contains some internal functions that have to be inline for
+ * optimization purposes.
+ *
+ * Yes, I do include this file directly even if it's a .c file.
+ * What the norminette doesn't know can't hurt it.
+ */
+
 #include "3ds.h"
 
 /// @brief Write a color at a specific location of the memory,

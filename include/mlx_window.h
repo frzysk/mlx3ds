@@ -17,13 +17,10 @@
  * doesn't do anything. The returned values marked as "unused" are undefined.
  * Both are kept as is to stay as compatible as possible with project using the
  * original MinilibX implementation.
- * 
- * When using a x,y couple to define a position, the origin (0,0) is always at
- * the top-left corner of the image.
  */
 
 /**
- * Functions to manage windows.
+ * This file contains functions to manage windows.
  */
 
 #ifndef MLX_WINDOW_H
