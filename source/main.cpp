@@ -409,7 +409,8 @@ navigate:
 				dirent *dir_in;
 				do {
 					dir_in = readdir(dir);
-					cout << "> " << dir_in->d_name << endl;
+					if (dir_in)
+						cout << "> " << dir_in->d_name << endl;
 				} while (dir_in);
 				closedir(dir);
 			}
@@ -424,14 +425,12 @@ navigate:
 					cout << "Content:" << endl;
 					int n = 1;
 					char buf[1000];
-					while (n)
+					while (n > 0)
 					{
 						n = read(file, buf, 1000);
 						if (n < 0)
-						{
 							cout << "read() error :(" << endl;
-						}
-						if (n > 0)
+						else if (n > 0)
 							write(1, buf, n);
 					}
 					cout << "[EOF]" << endl;
