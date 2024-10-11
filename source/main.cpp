@@ -384,7 +384,6 @@ files:
 	goto end;
 
 navigate:
-	fsInit();
 	{
 		char *last = new char[2];
 		last[0] = '/';
@@ -452,7 +451,6 @@ navigate:
 		}
 		delete [] last;
 	}
-	fsExit(); // TODO keep?
 	goto end;
 
 assets:

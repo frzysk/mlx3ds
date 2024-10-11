@@ -8,8 +8,6 @@
  ** Last update Sat Oct  1 14:56:13 2005 Olivier Crouzet
  */
 
-#include "utilsconsole_extern_c.h" // TODO remove
-
 #include	"mlx_int.h"
 #include	"mlx.h"
 #include	"mlx_internal.h"
