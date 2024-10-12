@@ -10,8 +10,8 @@
  * with embedassets.sh.
  */
 
-#ifndef MLX3DS_ASSETS_H
-# define MLX3DS_ASSETS_H
+#ifndef MLX3DS_EMBEDDEDASSETS_H
+# define MLX3DS_EMBEDDEDASSETS_H
 
 # include <string.h>
 
@@ -21,12 +21,12 @@ typedef void	*t_assetsocket;
 /// @brief Represents a file embedded with the program.
 typedef struct s_embeddedasset
 {
-    /// @brief Path of the file, relative to the assets directory (`.+(/.+)+`).
-    const char	*name;
-    /// @brief Size of the file content.
-    size_t		size;
-    /// @brief Content of the file. NUL-terminated (data[size] is '\0').
-    const char	*data;
+	/// @brief Path of the file, relative to the assets directory (`.+(/.+)+`).
+	const char	*name;
+	/// @brief Size of the file content.
+	size_t		size;
+	/// @brief Content of the file. NUL-terminated (data[size] is '\0').
+	const char	*data;
 }	t_embeddedasset;
 
 /// @brief Get an reference to the t_embeddedasset from its name.

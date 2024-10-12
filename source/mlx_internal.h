@@ -20,13 +20,13 @@
 /// @param msg Message to write. Must use less than 38 colons.
 void	mlx3ds_internal_fatalerror(const char *msg);
 
-struct s_internal_win;
+struct	s_internal_win;
 
 /// @brief Content of the mlx connection identifier.
 typedef struct s_internal_mlx
 {
 	/// @brief is true after mlx_init() was called, is false before.
-	bool			is_init_called;
+	bool					is_init_called;
 	/// @brief Window displayed on the top screen.
 	struct s_internal_win	*top_window;
 }	t_internal_mlx;
