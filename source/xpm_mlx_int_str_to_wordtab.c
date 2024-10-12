@@ -13,11 +13,9 @@
  * (at https://github.com/frzysk/mlx3ds).
  */
 
-// TODO: from mlx xpm: clean
+#include	"xpm_mlx_int.h"
 
-#include	"mlx_int.h"
 
-// [USED] [FULL]
 int	mlx_int_str_str(char *str,char *find,int len)
 {
   int	len_f;
@@ -42,7 +40,8 @@ int	mlx_int_str_str(char *str,char *find,int len)
   return (-1);
 }
 
-// [USED] [FULL]
+
+
 int	mlx_int_str_str_cote(char *str,char *find,int len)
 {
   int	len_f;
@@ -74,7 +73,7 @@ int	mlx_int_str_str_cote(char *str,char *find,int len)
   return (-1);
 }
 
-// [USED] [FULL]
+
 char	**mlx_int_str_to_wordtab(char *str)
 {
   char	**tab;

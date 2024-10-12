@@ -8,9 +8,7 @@
  * (at https://github.com/frzysk/mlx3ds).
  */
 
-// TODO: from mlx xpm: clean
-
-#include	"mlx_int.h"
+#include	"xpm_mlx_int.h"
 
 struct s_col_name mlx_col_name[] =
 {

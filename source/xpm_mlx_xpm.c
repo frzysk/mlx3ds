@@ -8,14 +8,13 @@
  ** Last update Sat Oct  1 14:56:13 2005 Olivier Crouzet
  */
 
+
 /**
  * Modified by Zy to work with the MinilibX For 3DS project
  * (at https://github.com/frzysk/mlx3ds).
  */
 
-// TODO: from mlx xpm: clean
-
-#include	"mlx_int.h"
+#include	"xpm_mlx_int.h"
 #include	"mlx.h"
 #include	"mlx_internal.h"
 #include	"mlx3ds.h"
@@ -28,7 +27,9 @@ extern struct s_col_name mlx_col_name[];
 		if (img) free(img); \
 		return ((void *)0);}
 
-// [USED] [FULL]
+
+
+
 char	*mlx_int_get_line(char *ptr,int *pos,int size)
 {
 	int			pos2;
@@ -46,7 +47,7 @@ char	*mlx_int_get_line(char *ptr,int *pos,int size)
 	return (ptr+pos4);
 }
 
-// [USED] [FULL]
+
 unsigned int	strlcpy_is_not_posix(char *dest, char *src, unsigned int size)
 {
 	unsigned	count;
@@ -65,7 +66,6 @@ unsigned int	strlcpy_is_not_posix(char *dest, char *src, unsigned int size)
 	return (count);
 }
 
-// [USED] [FULL]
 char	*mlx_int_static_line(char **xpm_data,int *pos,int size)
 {
 	static char	*copy = 0;
@@ -88,7 +88,7 @@ char	*mlx_int_static_line(char **xpm_data,int *pos,int size)
 	return (copy);
 }
 
-// [USED] [FULL]
+
 int	mlx_int_get_col_name(char *str,int size)
 {
 	int	result;
@@ -100,7 +100,6 @@ int	mlx_int_get_col_name(char *str,int size)
 	return (result);
 }
 
-// [USED] [FULL]
 int	mlx_int_get_text_rgb(char *name, char *end)
 {
 	int			i;
@@ -123,7 +122,7 @@ int	mlx_int_get_text_rgb(char *name, char *end)
 	return (0);
 }
 
-// [USED] [FULL]
+
 int	mlx_int_xpm_set_pixel(t_internal_image *img, u8 *data, int opp, int col, int x)
 {
 	int	dec;
@@ -142,7 +141,7 @@ int	mlx_int_xpm_set_pixel(t_internal_image *img, u8 *data, int opp, int col, int
 	return (0);
 }
 
-// [USED] [FULL]
+
 void	*mlx_int_parse_xpm(t_mlx mlx_ptr,void *info,int info_size,char *(*f)())
 {
 		int		pos;
@@ -172,9 +171,8 @@ void	*mlx_int_parse_xpm(t_mlx mlx_ptr,void *info,int info_size,char *(*f)())
 		if (!(line = f(info,&pos,info_size)) ||
 						!(tab = mlx_int_str_to_wordtab(line)) || !(width = atoi(tab[0])) ||
 						!(height = atoi(tab[1])) || !(nc = atoi(tab[2])) ||
-						!(cpp = atoi(tab[3])))
+						!(cpp = atoi(tab[3])) )
 				RETURN;
-		
 		free(tab);
 		tab = 0;
 
@@ -202,17 +200,28 @@ void	*mlx_int_parse_xpm(t_mlx mlx_ptr,void *info,int info_size,char *(*f)())
 				if (!tab[j])
 						RETURN;
 				rgb_col = mlx_int_get_text_rgb(tab[j], tab[j+1]);
+				/*
+				if ((rgb_col = mlx_int_get_text_rgb(tab[j], tab[j+1]))==-1)
+				{
+						if (!(clip_data = malloc(4*width*height)) ||   ok, nice size ..
+										!(clip_img = XCreateImage(xvar->display, xvar->visual,
+														1, XYPixmap, 0, clip_data,
+														width, height, 8, (width+7)/8)) )
+								RETURN;
+						memset(clip_data, 0xFF, 4*width*height);
+				}
+				*/
 				if (method)
 						colors_direct[mlx_int_get_col_name(line,cpp)] = rgb_col;
+								// rgb_col>=0?mlx_get_color_value(xvar, rgb_col):rgb_col;
 				else
 				{
 						colors[i].name = mlx_int_get_col_name(line,cpp);
-						colors[i].col = rgb_col;
+						colors[i].col = rgb_col; //rgb_col>=0?mlx_get_color_value(xvar,rgb_col):rgb_col;
 				}
 				free(tab);
 				tab = (void *)0;
 		}
-
 
 		if (!(img = mlx_new_image(mlx_ptr,width,height)))
 				RETURN;
@@ -240,6 +249,13 @@ void	*mlx_int_parse_xpm(t_mlx mlx_ptr,void *info,int info_size,char *(*f)())
 												j = 0;
 										}
 						}
+						/*
+						if (col==-1)
+								XPutPixel(clip_img, x, height-1-i, 0);
+						else
+								mlx_int_xpm_set_pixel(img, data, opp, col, x);
+						x ++;
+						*/
 						if (col==-1)
 							col = 0xFF000000;
 						mlx_int_xpm_set_pixel(img, data, 3, col, x);
@@ -247,7 +263,25 @@ void	*mlx_int_parse_xpm(t_mlx mlx_ptr,void *info,int info_size,char *(*f)())
 				}
 				data += img->width * 3;
 		}
-
+		/*
+		if (clip_data)
+		{
+				if (!(clip_pix = XCreatePixmap(xvar->display, xvar->root,
+												width, height, 1)) )
+						RETURN;
+				img->gc = XCreateGC(xvar->display, clip_pix, 0, &xgcv);
+				XPutImage(xvar->display, clip_pix, img->gc, clip_img,
+								0, 0, 0, 0, width, height);
+				XFreeGC(xvar->display, img->gc);
+				xgcv.clip_mask = clip_pix;
+				xgcv.function = GXcopy;
+				xgcv.plane_mask = AllPlanes;
+				img->gc = XCreateGC(xvar->display, xvar->root, GCClipMask|GCFunction|
+								GCPlaneMask, &xgcv);
+				XSync(xvar->display, False);
+				XDestroyImage(clip_img);
+		}
+		*/
 		if (colors)
 				free(colors);
 		if (colors_direct)
@@ -255,7 +289,7 @@ void	*mlx_int_parse_xpm(t_mlx mlx_ptr,void *info,int info_size,char *(*f)())
 		return (img);
 }
 
-// [USED] [FULL]
+
 int	mlx_int_file_get_rid_comment(char *ptr, int size)
 {
 		int	com_begin;
@@ -274,7 +308,7 @@ int	mlx_int_file_get_rid_comment(char *ptr, int size)
 		return (0);
 }
 
-// [USED]
+
 t_image	mlx_xpm_file_to_image(t_mlx xvar, const char *file,int *width,int *height)
 {
 		const t_embeddedasset	*asset;
@@ -304,7 +338,6 @@ t_image	mlx_xpm_file_to_image(t_mlx xvar, const char *file,int *width,int *heigh
 		return (img);
 }
 
-// [USED] [FULL]
 t_image	mlx_xpm_to_image(t_mlx mlx_ptr, const char **xpm_data,int *width,int *height)
 {
 		t_internal_image	*img;
