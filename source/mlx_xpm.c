@@ -73,6 +73,7 @@ char	*mlx_int_static_line(char **xpm_data,int *pos,int size)
 	int			len2;
 	char		*str;
 
+	(void)size;
 	str = xpm_data[(*pos)++];
 	if ((len2 = strlen(str))>len)
 	{
@@ -127,6 +128,7 @@ int	mlx_int_xpm_set_pixel(t_internal_image *img, u8 *data, int opp, int col, int
 {
 	int	dec;
 	
+	(void)img;
 	dec = opp;
   	while (dec--)
     {
@@ -293,7 +295,8 @@ t_image	mlx_xpm_file_to_image(t_mlx xvar, const char *file,int *width,int *heigh
 			return (NULL);
 		ptr = strdup(asset->data);
 		mlx_int_file_get_rid_comment(ptr, asset->size);
-		if (img = mlx_int_parse_xpm(xvar,ptr,asset->size,mlx_int_get_line))
+		img = mlx_int_parse_xpm(xvar,ptr,asset->size,mlx_int_get_line);
+		if (img)
 		{
 				*width = img->width;
 				*height = img->height;

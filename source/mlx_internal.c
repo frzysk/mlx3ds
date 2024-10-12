@@ -22,6 +22,7 @@ void	mlx3ds_internal_fatalerror(const char *msg)
 void	mlx3ds_internal_drawstart(
 			t_internal_mlx *mlx_ptr, t_internal_win *win_ptr)
 {
+	(void)mlx_ptr;
 	win_ptr->framebuffer = gfxGetFramebuffer(GFX_TOP, GFX_LEFT,
 			&win_ptr->framebuffer_height, &win_ptr->framebuffer_width);
 	gspWaitForVBlank();
@@ -30,6 +31,8 @@ void	mlx3ds_internal_drawstart(
 void	mlx3ds_internal_drawend(
 			t_internal_mlx *mlx_ptr, t_internal_win *win_ptr)
 {
+	(void)mlx_ptr;
+	(void)win_ptr;
 	gfxFlushBuffers();
 	gfxSwapBuffers();
 }

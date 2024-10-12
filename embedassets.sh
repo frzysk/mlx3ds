@@ -12,7 +12,7 @@ ASSET_FILES=$@
 >> __embeddedassets.c echo '#include "mlx3ds.h"'
 >> __embeddedassets.c echo 'const t_embeddedasset *mlx3ds_assets_get(const char *name)'
 >> __embeddedassets.c echo '{'
->> __embeddedassets.c echo '    const static t_embeddedasset assets[] = {'
+>> __embeddedassets.c echo '    static const t_embeddedasset assets[] = {'
 for file in $ASSET_FILES
 do
 	if [ ! -f $file ]

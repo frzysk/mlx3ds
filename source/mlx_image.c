@@ -35,6 +35,7 @@ t_image	mlx_new_image(void *mlx_ptr, int width, int height)
 
 int	mlx_destroy_image(t_mlx mlx_ptr, t_image img_ptr)
 {
+	(void)mlx_ptr;
 	if (img_ptr)
 		free(((t_internal_image *)img_ptr)->data);
 	free(img_ptr);
