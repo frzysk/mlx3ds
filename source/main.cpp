@@ -5,10 +5,11 @@ extern "C" {
 #include "utilsconsole.h"
 }
 #include <iostream>
-#include <string.h>
 #include "firsk.xpm"
+#include <string.h>
 #include <sys/dirent.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -494,6 +495,58 @@ assets:
 				<< asset->data << "\"" << endl;
 		else
 			cout << "No asset" << endl;
+		uc_pause();
+		{
+			char buf[10];
+			cout
+				<< "Read asset \"sous/sous/fichier\"" << endl
+				<< "from mlx3ds_assets_open()..." << endl
+				<< "(buf[10])" << endl;
+			t_assetsocket asset = mlx3ds_assets_open("sous/sous/fichier");
+			if (!asset)
+				cout << "Error" << endl;
+			else {
+				cout << "Content: \"";
+				int n;
+				do {
+					n = mlx3ds_assets_read(asset, buf, 10);
+					if (n < 0) {
+						cout << "read error :/" << endl;
+						break;
+					}
+					if (n > 0)
+						write(1, buf, n);
+				} while (n);
+				cout << "\"" << endl;
+				mlx3ds_assets_close(asset);
+			}
+		}
+		uc_pause();
+		{
+			char buf[100];
+			cout
+				<< "Read asset \"sous/sous/fichier\"" << endl
+				<< "from mlx3ds_assets_open()..." << endl
+				<< "(buf[100])" << endl;
+			t_assetsocket asset = mlx3ds_assets_open("sous/sous/fichier");
+			if (!asset)
+				cout << "Error" << endl;
+			else {
+				cout << "Content: \"";
+				int n;
+				do {
+					n = mlx3ds_assets_read(asset, buf, 100);
+					if (n < 0) {
+						cout << "read error :/" << endl;
+						break;
+					}
+					if (n > 0)
+						write(1, buf, n);
+				} while (n);
+				cout << "\"" << endl;
+				mlx3ds_assets_close(asset);
+			}
+		}
 		uc_pause();
 	}
 	goto end;

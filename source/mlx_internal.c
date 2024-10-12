@@ -1,17 +1,16 @@
 /**
- * mlx_internal.cpp
+ * mlx_internal.c
  *   for the project "MinilibX for 3DS"
  *   by Zy
  *   at https://github.com/frzysk/mlx3ds
  */
 
-// TODO mlx_internal.cpp: embed uc_pause() and change to .c file
+// TODO mlx_internal.c: embed uc_pause()
 
-
-extern "C" {
 #include "utilsconsole.h"
 #include "mlx_internal.h"
 #include "3ds.h"
+#include <stdio.h>
 
 void	mlx3ds_internal_fatalerror(const char *msg)
 {
@@ -33,5 +32,4 @@ void	mlx3ds_internal_drawend(
 {
 	gfxFlushBuffers();
 	gfxSwapBuffers();
-}
 }
