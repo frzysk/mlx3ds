@@ -2,11 +2,10 @@ extern "C" {
 #include "mlx.h"
 #include "3ds.h"
 #include "mlx3ds.h"
+#include "utilsconsole.h"
 }
 #include <iostream>
 #include <string.h>
-#include "utilsconsole.hpp"
-#include "utilsconsole.hpp"
 #include "firsk.xpm"
 #include <sys/dirent.h>
 #include <fcntl.h>

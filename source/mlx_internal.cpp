@@ -7,9 +7,9 @@
 
 // TODO mlx_internal.cpp: embed uc_pause() and change to .c file
 
-#include "utilsconsole.hpp"
 
 extern "C" {
+#include "utilsconsole.h"
 #include "mlx_internal.h"
 #include "3ds.h"
 

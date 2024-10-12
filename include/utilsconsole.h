@@ -1,14 +1,17 @@
 /**
- * utilsconsole.hpp
+ * utilsconsole.h
  *   by Zy
  */
 
 /**
- * utilsconsole.hpp (uc_*() functions)
+ * utilsconsole.h (uc_*() functions)
  * Utility functions for the 3DS console.
  */
 
 #pragma once
+
+#ifdef __cplusplus
+extern "C++" {
 
 #include <string>
 #include <vector>
@@ -39,6 +42,9 @@ typedef struct {
 /// @param elements A pointer to a vector of all the elements of the menu.
 /// @return The index of the confirmed element. If none, return -1.
 int uc_menu(vector<s_uc_menu_element> &elements);
+
+}
+#endif
 
 /// @brief Display a menu quickly using only confirm buttons.
 /// @details

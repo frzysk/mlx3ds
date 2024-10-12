@@ -3,12 +3,15 @@
  *   by Zy
  */
 
-#include "utilsconsole.hpp"
-
-#include <3ds.h>
 #include <iostream>
-#include <stdarg.h>
 #include <cstring>
+extern "C" {
+#include "utilsconsole.h"
+#include <3ds.h>
+#include <stdarg.h>
+}
+
+using namespace std;
 
 int uc_menu(vector<s_uc_menu_element> &elements) {
     static void *lastElements = NULL;
@@ -71,6 +74,8 @@ int uc_menu(vector<s_uc_menu_element> &elements) {
     return confirmed ? selected : -1;
 }
 
+extern "C" {
+
 int uc_menu_quick(const char *str, ...) {
     va_list arguments;
     auto elements = vector<s_uc_menu_element>();
@@ -105,4 +110,6 @@ char	*uc_keyboard(const char *def)
 	swkbdSetInitialText(&swkbd, def);
 	swkbdInputText(&swkbd, buf, 1000);
 	return (buf);
+}
+
 }
