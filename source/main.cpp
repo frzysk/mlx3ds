@@ -47,7 +47,7 @@ int main(void) {
 	// MENU
 	{
 		switch (uc_menu_quick("pixels", "images", "xpm", "files",
-			"navigate", "assets", "quit", NULL))
+			"navigate", "assets", "xpm files", "quit", NULL))
 		{
 		case 0:
 			goto pixels;
@@ -66,6 +66,9 @@ int main(void) {
 			break;
 		case 5:
 			goto assets;
+			break;
+		case 6:
+			goto xpm_files;
 			break;
 		}
 		goto end;
@@ -547,6 +550,34 @@ assets:
 				mlx3ds_assets_close(asset);
 			}
 		}
+		uc_pause();
+	}
+	goto end;
+
+xpm_files:
+	{
+		cout
+			<< "Display snas.xpm from" << endl
+			<< "mlx_xpm_file_to_image()..." << endl;
+		uc_pause();
+		{
+			win = mlx_new_window(mlx, 400, 240, NULL);
+			if (!win) {
+				cout << "mlx_new_window() error :/" << endl;
+				goto xpm_files_end;
+			}
+
+			int w, h;
+			t_image img = mlx_xpm_file_to_image(mlx, "snas.xpm", &w, &h);
+			if (!img) {
+				cout << "Image not found :/" << endl;
+				goto xpm_files_end;
+			}
+			cout << "width: " << w << ", height: " << h << endl;
+			mlx_put_image_to_window(mlx, win, img, 100, 100);
+		}
+	xpm_files_end:
+		cout << "DONE! (i hope)" << endl;
 		uc_pause();
 	}
 	goto end;

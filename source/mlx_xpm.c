@@ -18,6 +18,7 @@
 #include	"mlx_int.h"
 #include	"mlx.h"
 #include	"mlx_internal.h"
+#include	"mlx3ds.h"
 
 extern struct s_col_name mlx_col_name[];
 
@@ -271,34 +272,34 @@ int	mlx_int_file_get_rid_comment(char *ptr, int size)
 		return (0);
 }
 
-/* [USED]
-t_image	mlx_xpm_file_to_image(t_mlx xvar,char *file,int *width,int *height)
+// [USED]
+t_image	mlx_xpm_file_to_image(t_mlx xvar, const char *file,int *width,int *height)
 {
-		int	fd;
-		int	size;
+		const t_embeddedasset	*asset;
 		char	*ptr;
 		t_internal_image	*img;
 
-		fd = -1;
-		if ((fd = open(file,O_RDONLY))==-1 || (size = lseek(fd,0,SEEK_END))==-1 ||
-						(ptr = mmap(0,size,PROT_WRITE|PROT_READ,MAP_PRIVATE,fd,0))==
-						(void *)MAP_FAILED)
-		{
-				if (fd>=0)
-						close(fd);
-				return ((void *)0);
-		}
-		mlx_int_file_get_rid_comment(ptr, size);
-		if (img = mlx_int_parse_xpm(xvar,ptr,size,mlx_int_get_line))
+		// fd = -1;
+		// if ((fd = open(file,O_RDONLY))==-1 || (size = lseek(fd,0,SEEK_END))==-1 ||
+		// 				(ptr = mmap(0,size,PROT_WRITE|PROT_READ,MAP_PRIVATE,fd,0))==
+		// 				(void *)MAP_FAILED)
+		// {
+		// 		if (fd>=0)
+		// 				close(fd);
+		// 		return ((void *)0);
+		// }
+		asset = mlx3ds_assets_get(file);
+		if (!asset)
+			return (NULL);
+		ptr = strdup(asset->data);
+		mlx_int_file_get_rid_comment(ptr, asset->size);
+		if (img = mlx_int_parse_xpm(xvar,ptr,asset->size,mlx_int_get_line))
 		{
 				*width = img->width;
 				*height = img->height;
 		}
-		munmap(ptr,size);
-		close(fd);
 		return (img);
 }
-//*/
 
 // [USED] [FULL]
 t_image	mlx_xpm_to_image(t_mlx mlx_ptr, const char **xpm_data,int *width,int *height)

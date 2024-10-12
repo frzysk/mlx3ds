@@ -75,7 +75,7 @@ t_image	mlx_xpm_to_image(t_mlx mlx_ptr, const char **xpm_data,
 
 // ??? TODO docs xpm_file_to_image
 // width & height CAN be null (check please :3)
-t_image	_mlx_xpm_file_to_image(t_mlx mlx_ptr, char *filename,
+t_image	mlx_xpm_file_to_image(t_mlx mlx_ptr, const char *filename,
 			int *width, int *height);
 
 /// @brief Destroy an image to avoid leaks.
