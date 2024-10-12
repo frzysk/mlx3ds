@@ -21,7 +21,7 @@ do
 	fi
 	>> __embeddedassets.c echo -n "{\"$(echo $file | sed -e "s/^${ASSETS_FULL_DIR//\//\\\/}//")\", "
 	>> __embeddedassets.c echo -n "$(stat --printf=%s $file)"', '
-	>> __embeddedassets.c echo "\"$(< $file xxd -i | sed -e 's/[, ] 0x/\\x/g')\"},"
+	>> __embeddedassets.c echo "\"$(< $file xxd -i | sed -ze 's/[, \n\t\r]\+0x/\\x/g')\"},"
 done
 >> __embeddedassets.c echo '    {NULL, 0, NULL}};'
 >> __embeddedassets.c echo '    for (int i = 0; assets[i].name; i++)'
