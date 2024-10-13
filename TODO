@@ -1,1 +1,7 @@
 TODO move mlx .c and .h files in its own directory
+TODO lower dimensions
+TODO higher dimensions (option change mode)
+TODO pointer from touchscreen (and laptop way) (option change mode) (option for touchscreen: no MotionNotify event)
+TODO bottom screen window
+TODO 3d window, with put image with depth, and 3d images
+TODO mlx_exit()
