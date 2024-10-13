@@ -5,3 +5,6 @@ TODO pointer from touchscreen (and laptop way) (option change mode) (option for 
 TODO bottom screen window
 TODO 3d window, with put image with depth, and 3d images
 TODO mlx_exit()
+
+TODO hook functions should be compatible again
+TODO mlx_init: use GSP_RGBA8_OES, and change mlx_get_data_addr accordingly
