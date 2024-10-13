@@ -10,6 +10,7 @@
 #include "3ds.h"
 #include "mlx_internal.h"
 #include <stdlib.h>
+#include <strings.h>
 
 t_win	mlx_new_window(t_mlx mlx_ptr, int size_x, int size_y, const char *title)
 {
@@ -21,10 +22,11 @@ t_win	mlx_new_window(t_mlx mlx_ptr, int size_x, int size_y, const char *title)
 	r = malloc(sizeof(t_internal_win));
 	if (!r)
 		return (NULL);
+	bzero(r, sizeof(t_internal_win));
 	r->mlx = mlx_ptr;
+	r->mlx->top_window = r;
 	r->width = size_x;
 	r->height = size_y;
-	r->framebuffer = NULL;
 	return (r);
 }
 

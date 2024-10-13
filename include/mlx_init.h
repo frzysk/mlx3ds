@@ -34,6 +34,4 @@
 ///         NULL if failed.
 t_mlx	mlx_init(void); // TODO should call this before REALLY anything else?
 
-// TODO a mlx_end() necessary?
-
 #endif

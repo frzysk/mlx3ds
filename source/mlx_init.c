@@ -11,10 +11,7 @@
 #include <stdlib.h>
 #include "3ds.h"
 
-static t_internal_mlx	g_internal_mlx = {
-	.is_init_called = false,
-	.top_window = NULL,
-};
+static t_internal_mlx	g_internal_mlx;
 
 t_mlx	mlx_init(void)
 {

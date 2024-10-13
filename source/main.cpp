@@ -40,6 +40,47 @@ static void draw_rainbow_image(t_mlx mlx, t_win win, int x, int y)
 	}
 }
 
+static int keydown_hook(int keycode, void *param)
+{
+	(void)param;
+	cout << "[D" << keycode << "] (B to continue)" << endl;
+	return (0);
+};
+
+static int create_hook(void *param) {
+	(void)param;
+	cout << "create_hook() called" << endl;
+	int file = open("__tmp_heya.txt", O_RDONLY);
+	if (!file)
+		cout << "can't open file __tmp_heya.txt" << endl;
+	else {
+		static char buf[100];
+		if (read(file, buf, 100) < 0)
+			cout << "can't read file" << endl;
+		else
+			cout << "buf :\"" << buf << "\"" << endl;
+	}
+	close(file);
+	cout
+		<< "quit software to create file:" << endl
+		<< "  __tmp_heya.txt" << endl;
+	return (0);
+};
+
+static int destroy_hook(void **ptrs) {
+	int file = open("__tmp_heya.txt", O_WRONLY | O_CREAT);
+	if (!file) {
+		cout << "can't create file" << endl;
+		return (0);
+	}
+	write(file, "spaghetti :3\n", 13);
+	if (!file)
+		cout << "can't write on file" << endl;
+	close(file);
+	mlx_loop_end(ptrs[0]);
+	return (0);
+};
+
 int main(void) {
 	void *const mlx = mlx_init();
 	void *win;
@@ -47,7 +88,7 @@ int main(void) {
 	// MENU
 	{
 		switch (uc_menu_quick("pixels", "images", "xpm", "files",
-			"navigate", "assets", "xpm files", "quit", NULL))
+			"navigate", "assets", "xpm files", "events", "quit", NULL))
 		{
 		case 0:
 			goto pixels;
@@ -69,6 +110,9 @@ int main(void) {
 			break;
 		case 6:
 			goto xpm_files;
+			break;
+		case 7:
+			goto events;
 			break;
 		}
 		goto end;
@@ -578,6 +622,59 @@ xpm_files:
 		}
 	xpm_files_end:
 		cout << "DONE! (i hope)" << endl;
+		uc_pause();
+	}
+	goto end;
+
+events:
+	{
+		win = mlx_new_window(mlx, 400, 240, NULL);
+
+		const static auto loop_hook = [](void *param) -> int {
+			(void)param;
+			cout << "hi from loop_hook (B to continue)" << endl;
+			hidScanInput();
+			if (hidKeysDown() & KEY_B)
+				mlx_loop_end(param);
+			return (0);
+		};
+		mlx_loop_hook(mlx, loop_hook, mlx);
+
+		mlx_loop(mlx);
+		cout << "mlx_loop() returned." << endl;
+		mlx_destroy_window(mlx, win);
+		mlx_loop_hook(mlx, NULL, NULL);
+		uc_pause();
+	}
+	{
+		win = mlx_new_window(mlx, 400, 240, NULL);
+
+		const static auto key_hook = [](int keycode, void *param) -> int {
+			cout << "[U" << keycode << "] (B to continue)" << endl;
+			if (keycode == KEY_B)
+				mlx_loop_end(param);
+			return (0);
+		};
+		mlx_key_hook(win, key_hook, mlx);
+
+		mlx_hook(win, KeyPress, 0, (int (*)())(void *)&keydown_hook, mlx);
+
+		mlx_loop(mlx);
+		cout << "mlx_loop() returned." << endl;
+		mlx_destroy_window(mlx, win);
+		uc_pause();
+	}
+	{
+		win = mlx_new_window(mlx, 400, 240, NULL);
+		void *ptrs[2];
+		ptrs[0] = mlx;
+		ptrs[1] = win;
+		mlx_hook(win, CreateNotify, 0, (int (*)())(void *)&create_hook, NULL);
+		mlx_hook(win, DestroyNotify, 0, (int (*)())(void *)&destroy_hook, &ptrs);
+
+		mlx_loop(mlx);
+		cout << "mlx_loop() returned." << endl;
+		mlx_destroy_window(mlx, win);
 		uc_pause();
 	}
 	goto end;

@@ -27,6 +27,7 @@
 # define MLX_HOOK_H
 
 # include "mlx3ds_typealiases.h"
+# include "mlx_events.h"
 
 /// @brief Doesn't do anything, the 3DS doesn't have a mouse.
 ///
@@ -34,10 +35,10 @@
 /// @param funct_ptr Unused
 /// @param param Unused.
 /// @return Unused.
-int		_mlx_mouse_hook(t_win win_ptr, int (*funct_ptr)(), void *param);
+int		mlx_mouse_hook(t_win win_ptr, int (*funct_ptr)(), void *param);
 
-/// @brief Assign a function to a key event. When a key is pressed, the function
-///        will be called.
+/// @brief Assign a function to a key event. When a key is released, the
+///        function will be called.
 ///
 /// @param win_ptr Window to affect.
 /// @param funct_ptr Function to call when the event occurs. `keycode` is the
@@ -47,7 +48,7 @@ int		_mlx_mouse_hook(t_win win_ptr, int (*funct_ptr)(), void *param);
 ///                  The return value is unused.
 /// @param param Address to pass to the function every time it is called. 
 /// @return Unused.
-int		_mlx_key_hook(t_win win_ptr,
+int		mlx_key_hook(t_win win_ptr,
 			int (*funct_ptr)(int keycode, void *param), void *param);
 
 /// @brief Assign a function which will be called when the window should be
@@ -60,7 +61,7 @@ int		_mlx_key_hook(t_win win_ptr,
 ///                  unused.
 /// @param param Address to pass to the function every time it is called.
 /// @return Unused.
-int		_mlx_expose_hook(t_win win_ptr,
+int		mlx_expose_hook(t_win win_ptr,
 			int (*funct_ptr)(void *param), void *param);
 
 /// @brief Assign a function which will be called in loop non-stop.
@@ -71,21 +72,34 @@ int		_mlx_expose_hook(t_win win_ptr,
 ///                  unused.
 /// @param param Address to pass to the function every time it is called.
 /// @return Unused.
-int		_mlx_loop_hook(t_mlx mlx_ptr,
+int		mlx_loop_hook(t_mlx mlx_ptr,
 			int (*funct_ptr)(void *param), void *param);
 
 /// @brief Loop indefinitely and wait for events to occurs to call the
 ///        corresponding functions.
 ///
 /// @param mlx_ptr mlx connection identifier returned by mlx_init().
-/// @return This function never returns. 
-int		_mlx_loop(void *mlx_ptr);
+/// @return This function returns only when the program is quitting or if
+///         mlx_loop_end() is used. The return value is unused.
+int		mlx_loop(t_mlx mlx_ptr);
 
-// ???
-int		_mlx_loop_end(void *mlx_ptr);
+/// @brief Stop the loop of mlx_loop. Doesn't do anything if mlx_loop isn't
+///        running.
+///
+/// @param mlx_ptr mlx connection identifier returned by mlx_init().
+/// @return Unused.
+int		mlx_loop_end(t_mlx mlx_ptr);
 
-// god
-int		_mlx_hook(t_mlx win_ptr, int x_event, int x_mask,
+/// @brief Assign a function to a custom event.
+///
+/// @param win_ptr Window to affect.
+/// @param x_event The event to use. "See mlx_events.h".
+/// @param x_mask Unused.
+/// @param funct Function to call when the event occurs. The prototype depends
+///              on the event type, "see mlx_events.h".
+/// @param param Address to pass to the function every time it is called.
+/// @return Unused.
+int		mlx_hook(t_mlx win_ptr, int x_event, int x_mask,
 			int (*funct)(), void *param);
 
 #endif

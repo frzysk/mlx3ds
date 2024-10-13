@@ -14,6 +14,7 @@
 
 # include <stdbool.h>
 # include "3ds.h"
+# include "mlx_events.h"
 
 /// @brief Write an error message and exit the program.
 ///
@@ -29,23 +30,38 @@ typedef struct s_internal_mlx
 	bool					is_init_called;
 	/// @brief Window displayed on the top screen.
 	struct s_internal_win	*top_window;
+	/// @brief Function called in loop by mlx_loop().
+	int						(*hook_loop_function)(void *param);
+	/// @brief Parameter given to hook_loop_function.
+	void					*hook_loop_param;
+	/// @brief Set to false to break the loop of mlx_loop().
+	bool					loop;
 }	t_internal_mlx;
+
+// TODO docs
+typedef struct s_internal_win_hook
+{
+	int		(*hook)();
+	void	*param;
+}	t_internal_win_hook;
 
 /// @brief Represents a window.
 typedef struct s_internal_win
 {
 	/// @brief mlx connection identifier
-	t_internal_mlx	*mlx;
+	t_internal_mlx		*mlx;
 	/// @brief Width of the window
-	int				width;
+	int					width;
 	/// @brief Height of the window
-	int				height;
+	int					height;
 	/// @brief Buffer of the screen.
-	u8				*framebuffer;
+	u8					*framebuffer;
 	/// @brief Width of the screen (on x).
-	u16				framebuffer_width;
+	u16					framebuffer_width;
 	/// @brief Height of the screen (on y).
-	u16				framebuffer_height;
+	u16					framebuffer_height;
+	// TODO docs
+	t_internal_win_hook	hooks[LASTEvent];
 }	t_internal_win;
 
 /// @brief Represents an image in memory.
